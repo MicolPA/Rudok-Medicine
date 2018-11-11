@@ -1,0 +1,55 @@
+.divTitulo{
+	background: rgb(35,36,40);
+	border-radius: 10px;
+	padding-top: 0.5%;
+	padding-bottom: 0.5%;
+
+	margin-bottom: 4%;
+	color: white;
+	font-family: 'Share Tech', serif;
+}
+
+#opcionesDoc{
+
+	padding-left: 2%;
+	padding-right: 2%;
+	padding-top: 2%;
+	text-align: center;
+}
+
+
+#opcionesDoc:hover{
+	background-color:rgb(255,94,94);
+	color: white;
+	border-radius: 10px;
+}
+
+#opcionesRep{
+
+	padding-left: 2%;
+	padding-right: 2%;
+	padding-top: 2%;
+	text-align: center;
+}
+
+#opcionesRep:hover{
+	border:2px solid rgb(255,94,94);
+	color: white;
+	border-radius: 10px;
+}
+
+.enlacesOpciones h3{
+	color: black;
+	font-weight: bold;
+}
+.img-cat{
+		width: 60%;
+		margin-bottom: 5%;
+
+	}
+	
+.hr {
+	border: 2px inset #eee;
+	height: 1px;
+	width: 100%;
+	}

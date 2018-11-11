@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- ICONO -->
+
+    <link rel="icon" type="img/png" href="img/icono.png" /> 
+
+    <!-- ............... ESTILOS............... -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/estilos.css">
+    <!-- ............... ESTILOS............... -->
+
+
+    <!-- ...............SWEETALERT 2............... -->
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.6/sweetalert2.common.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.6/sweetalert2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.6/sweetalert2.min.css">
+    <!-- ...............SWEETALERT............... -->
+
+    
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyBOkMOXPFT3wJOJfeUCCsvobquUFna_ghM",
+      authDomain: "micol-20152947.firebaseapp.com",
+      databaseURL: "https://micol-20152947.firebaseio.com",
+      projectId: "micol-20152947",
+      storageBucket: "micol-20152947.appspot.com",
+      messagingSenderId: "592066245324"
+    };
+    firebase.initializeApp(config);
+  </script>
+
+    <title></title>
+ 
+
+  
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand"  href="index.html?i=principal">Rudok Medicine</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="index.html?i=principal">Inicio</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gestionar <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                 <li><a href="index.html?i=agregarPacientes">Nuevo paciente</a></li>
+               <li><a href="index.html?i=agregarCitas">Programar cita</a></li>
+               <li><a href="index.html?i=realizarReportes">Realizar Reportes</a></li>
+              </ul>
+            </li>
+            <li><a href="index.html?i=misPacientes">Mis Pacientes</a></li>
+
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a id ="NombreWelcome"></a></li>
+            <li><a id="btn-iniciar" href="index.html?i=login">Iniciar Sesión</a></li>
+            <li><a id="btn-registrarse" href="registrarse.html">Registrarse</a></li>
+            <li><a id="btn-cerrarSesion" class="hide" href="javascript:CerrarSesion();">Cerrar Sesión</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="contenedor" style="margin-top: 50px"></div>
+
+
+<style>
+  .divind{
+    margin:2%;
+  
+    border-radius:10px;
+    padding:5px;
+  }
+  
+  .titulosIND{
+    font-size: 40px;
+  }
+
+  .divTextoIND{
+    padding-top: 100px;
+    padding-left: 10%;
+  }
+  
+  .divTextoINDL{
+    padding-top: 100px;
+    padding-right: 10%;
+  }
+</style>
+
+
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/cargarPaginas.js"></script>
+
+    <script type="text/javascript">
+
+       i = getUrlParameter('i');
+
+      
+        PaginaUrl = "principal.html";
+      $(".contenedor").load(PaginaUrl);
+       
+
+      if (i == 'login') {
+      PaginaUrl = "login.html";
+      $(".contenedor").load(PaginaUrl);
+      }
+
+      if (i == 'registrarse') {
+      PaginaUrl = "registrarse.html";
+      $(".contenedor").load(PaginaUrl);
+      }
+      if (i == 'principal') {
+      PaginaUrl = "principal.html";
+      $(".contenedor").load(PaginaUrl);
+      }
+
+      if (i == 'select') {
+      PaginaUrl = "seleccionar.html";
+      $(".contenedor").load(PaginaUrl);
+      }
+
+      if(i == 'misPacientes'){
+        PaginaUrl = "misPacientes.html";
+        $(".contenedor").load(PaginaUrl);
+      }
+      if(i == 'paciente'){
+        PaginaUrl = "paciente.html";
+        $(".contenedor").load(PaginaUrl);
+      }
+
+      if (i == 'agregarPacientes') {
+      PaginaUrl = "registrarPacientes.html";
+      $(".contenedor").load(PaginaUrl);
+      }
+
+      if (i == 'agregarCitas') {
+      PaginaUrl = "registrarVisitas.html";
+      $(".contenedor").load(PaginaUrl);
+      }
+
+      if (i == 'realizarReportes') {
+      PaginaUrl = "realizarReportes.html";
+      $(".contenedor").load(PaginaUrl);
+      }
+
+  var usuario = sessionStorage.getItem('usuario');
+
+
+
+
+
+
+  if (usuario != null){
+
+    console.log('logeado');
+    welcome = document.getElementById('NombreWelcome');
+    $('#btn-iniciar').addClass ('hide');
+    $('#btn-registrarse').addClass ('hide');
+    $('#btn-cerrarSesion').removeClass('hide');
+    welcome.innerHTML = "Hola, " + usuario;
+    console.log('logeado2');
+  }else{
+    if(i != 'login' && i != 'principal' ){
+      console.log('no logeado');
+      $('#btn-iniciar').removeClass ('hide');
+      window.location = "index.html?i=login";
+    }
+    
+  }
+
+  function CerrarSesion(){
+    swal({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(function () {
+      
+                firebase.auth().signOut().then(function() {
+                }, function(error) {
+                });
+            sessionStorage.removeItem('usuario');
+            window.location = 'index.html';
+        
+    })
+  }
+
+    </script>
+  </body>
+</html>

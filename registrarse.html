@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+   <!-- ............... ESTILOS............... -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/estilos.css">
+    <!-- ............... ESTILOS............... -->
+
+
+    <!-- ...............SWEETALERT 2............... -->
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.6/sweetalert2.common.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.6/sweetalert2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.6/sweetalert2.min.css">
+    <!-- ...............SWEETALERT............... -->
+
+    
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyBOkMOXPFT3wJOJfeUCCsvobquUFna_ghM",
+      authDomain: "micol-20152947.firebaseapp.com",
+      databaseURL: "https://micol-20152947.firebaseio.com",
+      projectId: "micol-20152947",
+      storageBucket: "micol-20152947.appspot.com",
+      messagingSenderId: "592066245324"
+    };
+    firebase.initializeApp(config);
+  </script>
+
+</head>
+<body>
+      <div class="col-md-8 col-lg-8 col-lg-offset-2 col-md-offset-2" style="border: 5px solid rgb(52,152,219);border-radius: 10px; padding: 2%;margin-top: 100px;">
+        <div class="col-lg-6 col-md-6">
+          <img src="logo.jpg" width="100%">
+        </div>
+       <form>
+          <div class="col-lg-6 col-md-6" style="border-left: 2px solid #ccc; " id="login-container">
+            <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3" style="margin-bottom: 30px;">
+              <img src="img/login.png" width="100%">
+            </div>
+            <div class="form-group" >
+              <input type="email" class="form-control text-center" id="correo" placeholder="Inserta tu correo">
+            </div>
+            <div class="form-group">
+              <input type="password" class="form-control text-center" id="clave" placeholder="Inserta la clave">
+            </div>
+            <div class="form-group">
+              <input type="password" class="form-control text-center" id="clave2" placeholder="Inserta nuevamente la clave">
+            </div>
+            <p>¿Ya tienes una cuenta? inicia sesión <a href="index.html?i=login">aquí</a></p>
+            <input type="button" class="btn btn-info" value="Crear usuario" onclick="CrearUsuario()"  style="background: rgb(52,152,219); color: white;"> 
+          </div>     
+       </form>
+    </div>
+</body>
+</html>
+
+        <script type="text/javascript">
+           function CrearUsuario(){
+
+            campos = {};
+            datos = [];
+            correo = document.getElementById ('correo').value;
+            clave = document.getElementById ('clave').value;
+            clave2 = document.getElementById ('clave2').value;
+            
+            if(clave == clave2 && correo != null){
+
+              firebase.auth().createUserWithEmailAndPassword(correo, clave).then(function(){
+                 
+                   swal(
+                 'Oops...',
+                 'Usuario creado correctamente.',
+                 'success'
+                )
+                   
+                  window.location = "index.html";
+
+                  
+              })
+
+              .catch(function(error){
+                var errorCode = error.code;
+                var errorMessage = error.message;
+
+                  swal(
+                 'Oops...',
+                 error.message,
+                 'error'
+                )
+            });
+                  
+              
+           
+        }
+        else{
+           swal(
+                 'Oops...',
+                 'Las contraseñas deben coincidir.',
+                 'error'
+                )
+        }
+
+    }    
+        </script>

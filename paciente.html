@@ -1,0 +1,363 @@
+
+
+
+
+	<div id="contenedor" class="col-md-9 col-lg-9 col-md-offset-1 con-lg-offset-1" style=" margin-top: 20px">
+
+		<h1 id="NombrePaciente"></h1>
+		
+		<hr>
+		<div class="row">
+			<div id="info"  class="col-lg-8 col-md-8"></div>
+			<h2 id="botones" class="col-lg-4 col-md-4"></h2>
+		</div>
+
+		<h2 id="">Consultas</h2>
+		
+		<hr>
+		<div class="row" id="rConsultas">
+			<div id="Consultas" class="col-lg-8 col-md-8"></div>
+			<div id="btnConsultas" class="col-lg-4 col-md-4"></div>
+		</div>
+		<hr>
+
+
+		
+      
+      <div class="col-mg-12 col-lg-12 hide" id="formularioInfoPaciente">
+      		<h2>Modificar información del paciente</h2>
+      		<hr>
+    	
+        <form id="formulario">
+          <div class="form-group" >
+        <label>Nombre</label>
+            <input type="text" class="form-control" id="nombre">
+          </div>
+          <div class="form-group" >
+          <label>Cedula</label>
+            <input type="number" class="form-control" id="cedula">
+          </div>
+          <div class="form-group" >
+          <span class="input-group">Correo</span>
+            <input type="email" class="form-control" id="email">
+          </div>
+          <div class="form-group" >
+          <label>Tipo de sangre</label>
+            <input type="text" class="form-control" id="tipoSangre">
+          </div>
+          <div class="form-group" >
+          <label>Sexo</label>
+            <input type="text" class="form-control" id="sexo">
+          </div>
+          <div class="form-group" >
+          <label>Fecha de nacimiento</label>
+            <input type="date" class="form-control" id="fechaNacimiento">
+          </div>
+          <div class="form-group" >
+          <label>Alergias</label>
+            <input type="text" class="form-control" id="alergias" >
+          </div>
+          <div class="form-group" >
+          <label>Signo Zodiacal</label>
+            <input type="text" class="form-control" id="signoZodiacal">
+          </div>
+          <div class="form-group" >
+          <label>Cantidad de consultas</label>
+            <input type="text" class="form-control" id="visitas">
+          </div>
+          <input type="button" onclick="modificarInfo();" class="btn btn-info" value="Guardar Cambios">
+      </div>
+        </form>
+	</div>
+
+	<div id="contenedorCitas" class="hide">
+	      <div class="col-md-6">
+	        <div class="form-group" >
+	            <select class="form-control" id="selectOp">
+	              <option>Seleccionar paciente</option>
+	            </select>
+	          </div>
+	          <div class="form-group" >
+	          <label>Fecha</label>
+	            <input type="date" class="form-control" name = "campos" id="fecha">
+	          </div>
+	          <div class="form-group" >
+	          <label>Motivo de consulta</label>
+	            <input type="text" class="form-control" name = "campos" id="MotivoConsulta" placeholder="Motivo Consulta">
+	          </div>
+	          <div class="form-group" >
+	          <label>No. de seguro</label>
+	            <input type="number" class="form-control" name = "campos" id="NoSeguro" placeholder="No. de seguro">
+	          </div>
+	          
+
+	          <input type="button" onclick="modificarCita()" class="btn btn-info" value="Agregar Paciente">
+	      </div>
+	      <div class="col-md-6 col-lg-6">
+	        <div class="form-group" >
+	          <label>Monto pagado</label>
+	            <input type="number" class="form-control" name = "campos" id="MontoConsulta" placeholder="Monto de consulta">
+	          </div>
+	          <div class="form-group" >
+	          <label>Diagnostico</label>
+	            <input type="text" class="form-control" name = "campos" id="diagnostico" placeholder="Diagnostico">
+	          </div>
+	          <div class="form-group" >
+	          <label>Notas</label>
+	            <textarea type="text" class="form-control" name = "campos" id="notas"></textarea>
+	          </div>
+	      </div>
+      
+    </div>
+
+
+<style type="text/css">
+	#contenedor{
+		
+	}
+	.btn-enlaces{
+		width: 60%;
+	}
+</style>
+
+<script type="text/javascript">
+		
+		//CARGANDO PACIENTES Y SUS DATOS PERSONALES//
+
+		uid = getUrlParameter('uid');
+		usuario = sessionStorage.getItem('usuario');
+        correoRef = usuario.replace(".", "_", "#", "_", "$", "_", "[", "_", "]", "_");
+        bd = firebase.database().ref('Hospital/' + correoRef + '/Pacientes/Datos/' + uid);
+		bd.once('value', function(snapshot){
+		registro = snapshot.val();
+		console.log(registro);
+
+		ul = document.createElement('ul');
+		$('#NombrePaciente').html(registro.nombre);
+
+		liNombre = document.createElement('li');
+		liNombre.innerHTML = "<b> Cedula: </b>" + registro.cedula;
+		ul.appendChild(liNombre);
+
+		liNombre = document.createElement('li');
+		liNombre.innerHTML = "<b>Tipo de sangre: </b>" + registro.tipoSangre;
+		ul.appendChild(liNombre);
+
+		liNombre = document.createElement('li');
+		liNombre.innerHTML = "<b>Correo: </b>" + registro.email;
+		ul.appendChild(liNombre);
+
+		liNombre = document.createElement('li');
+		liNombre.innerHTML = "<b>Sexo: </b>" + registro.sexo;
+		ul.appendChild(liNombre);
+
+		liNombre = document.createElement('li');
+		liNombre.innerHTML = "<b>Fecha de nacimiento: </b>" + registro.fechaNacimiento;
+		ul.appendChild(liNombre);
+
+		liNombre = document.createElement('li');
+		liNombre.innerHTML = "<b>Alergias: </b>" + registro.alergias;
+		ul.appendChild(liNombre);
+
+		liNombre = document.createElement('li');
+		liNombre.innerHTML = "<b>Signo Zodiacal: </b>" + registro.signoZodiacal;
+		ul.appendChild(liNombre);
+
+		liNombre = document.createElement('li');
+		liNombre.innerHTML = "<b>Cantidad de consultas: </b>" + registro.visitas;
+		ul.appendChild(liNombre);
+
+		btnBorrar = document.createElement('a');
+		btnBorrar.setAttribute('class', 'btn btn-danger btn-enlaces');
+		btnBorrar.innerHTML = 'Borrar Paciente';
+		btnBorrar.setAttribute('onclick', 'borrarPaciente();');
+
+		btnEditar = document.createElement('a');
+		btnEditar.setAttribute('class', 'btn btn-info btn-enlaces');
+		btnEditar.innerHTML = "Modificar Información";
+		btnEditar.setAttribute('onclick', 'cargarDatos();');
+		btnEditar.setAttribute('href', '#formularioInfoPaciente');
+
+		contenedor = document.getElementById('info').appendChild(ul);
+		contenedor = document.getElementById('botones').appendChild(btnBorrar);
+		contenedor = document.getElementById('botones').appendChild(btnEditar);
+	});
+
+		//CARGANDO DATOS DE LAS CONSULTAS DE LOS PACIENTES//
+
+        bd = firebase.database().ref('Hospital/' + correoRef + '/Pacientes/' + uid + '/Consultas');
+		bd.once('value', function(snapshot){
+		info = snapshot.val();
+
+		for(i in info){
+			datos = info[i];
+			console.log(datos)
+			ul = document.createElement('ul');
+
+
+		li = document.createElement('li');
+		li.innerHTML = "<b> Motivo de la consulta: </b>" + datos.MotivoConsulta;
+		ul.appendChild(li);
+
+		li = document.createElement('li');
+		li.innerHTML = "<b>Numero de Seguro: </b>" + datos.NoSeguro;
+		ul.appendChild(li);
+
+		li = document.createElement('li');
+		li.innerHTML = "<b>Fecha: </b>" + datos.fecha;
+		ul.appendChild(li);
+
+		li = document.createElement('li');
+		li.innerHTML = "<b>Diagnostico: </b>" + datos.diagnostico;
+		ul.appendChild(li);
+
+		li = document.createElement('li');
+		li.innerHTML = "<b>Monto pagado: </b>" + datos.MontoConsulta;
+		ul.appendChild(li);
+
+		li = document.createElement('li');
+		li.innerHTML = "<b>Notas: </b>" + datos.notas;
+		ul.appendChild(li);
+
+		hr = document.createElement('hr');
+		ul.appendChild(hr);
+
+		contenedorInfo = document.createElement('div');
+		contenedorInfo.setAttribute('class', 'col-md-8 col-lg-8');
+		contenedorInfo.appendChild(ul);	
+
+		contenedor = document.getElementById('rConsultas');
+		contenedor.appendChild(contenedorInfo);
+
+		
+	}
+				
+})
+
+
+
+
+		function borrarPaciente(){
+
+			swal({
+			  title: "¿Deseas continuar?",
+			  text: 'Estas apunto de borrar un paciente permanentemente',
+			  type: 'warning',
+			  showCancelButton: true,
+			  confirmButtonColor: '#3085d6',
+			  cancelButtonColor: '#d33',
+			  confirmButtonText: 'Si, borrar paciente!'
+			}).then(function () {
+				
+			uid = getUrlParameter('uid');
+			usuario = sessionStorage.getItem('usuario');
+        	correoRef = usuario.replace(".", "_", "#", "_", "$", "_", "[", "_", "]", "_");
+        	bd = firebase.database().ref('Hospital/' + correoRef + '/Pacientes/Datos/' + uid);
+			bd.remove();
+			window.location ="index.html?i=misPacientes";
+			})
+			
+			
+		}
+
+		function cargarDatos(){
+
+			formularioInfoPaciente = $('#formularioInfoPaciente');
+			formularioInfoPaciente.removeClass();
+
+			bd = firebase.database().ref('Hospital/' + correoRef + '/Pacientes/Datos/' + uid);
+			bd.once('value', function(snapshot){
+			datosPacienteEdt = snapshot.val();
+			console.log(datosPacienteEdt);
+			document.getElementById('nombre').value = datosPacienteEdt.nombre;
+        	document.getElementById('cedula').value = datosPacienteEdt.cedula;
+         	document.getElementById('email').value = datosPacienteEdt.email;
+            document.getElementById('tipoSangre').value = datosPacienteEdt.tipoSangre;
+            document.getElementById('sexo').value = datosPacienteEdt.sexo;
+            document.getElementById('fechaNacimiento').value = datosPacienteEdt.fechaNacimiento;
+        	document.getElementById('alergias').value = datosPacienteEdt.alergias;
+        	document.getElementById('signoZodiacal').value = datosPacienteEdt.signoZodiacal;
+        	document.getElementById('visitas').value = datosPacienteEdt.visitas;
+
+			});
+		}
+
+		function cargarDatosCita(){
+
+			formularioInfoPaciente = $('#contenedorCitas');
+			formularioInfoPaciente.removeClass();
+			bd = firebase.database().ref('Hospital/' + correoRef + '/Pacientes/'  + uid + '/Consultas');
+        	bd.once('value', function(sn){
+       		 tmp = sn.val();
+       		 console.log(tmp);
+          	for (i in tmp){
+            	registro = tmp[i];
+            	console.log(registro);
+            	bd = firebase.database().ref('Hospital/' + correoRef + '/Pacientes/Consultas/' + i);
+
+            	bd.once('value', function(snp){
+            		tmp1= snp.val();
+            		console.log("Hola "+tmp1);
+            		document.getElementById('MotivoConsulta').value = datosPacienteEdt.nombre;
+        			document.getElementById('tipoSangre').value = datosPacienteEdt.cedula;
+         			document.getElementById('fecha').value = datosPacienteEdt.email;
+            		document.getElementById('tipoSangre').value = datosPacienteEdt.tipoSangre;
+            		document.getElementById('MontoConsulta').value = datosPacienteEdt.sexo;
+
+            	});
+
+           
+           		
+           	
+          	}
+            
+			
+
+          
+			});
+		}
+
+
+
+
+
+		function modificarInfo(){
+
+			bd.once('value', function(snapshot){
+			console.log();
+			campos ={};
+			id = getUrlParameter('id');
+			campos.nombre = document.getElementById('nombre').value;
+        	campos.cedula = document.getElementById('cedula').value;
+        	campos.email = document.getElementById('email').value;
+        	campos.tipoSangre = document.getElementById('tipoSangre').value;
+        	campos.sexo = document.getElementById('sexo').value;
+        	campos.fechaNacimiento = document.getElementById('fechaNacimiento').value;
+        	campos.alergias = document.getElementById('alergias').value;
+        	campos.signoZodiacal=  document.getElementById('signoZodiacal').value;
+        	campos.visitas =  document.getElementById('visitas').value;
+        	campos.id = id;
+        	bd.set(campos);
+
+        	bd = firebase.database().ref('Hospital/' + correoRef + '/Consultas');
+        	bd.once('value', function(sn){
+        	tmp = sn.val();
+
+         	 for (i in tmp){
+            	registro = tmp[i];
+            	console.log(registro);
+            
+            if($('#NombrePaciente') == registro.paciente){
+            	
+            	registro.paciente = document.getElementById('nombre').value;
+            }
+          }
+        });
+
+
+		
+        	location.reload();
+			});
+		}
+</script>
+

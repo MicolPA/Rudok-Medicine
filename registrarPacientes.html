@@ -1,0 +1,298 @@
+
+
+    <div class="container">
+    <div class="col-mg-12 col-lg-12">
+      <h1>Registrar pacientes</h1>
+      <hr>
+    </div>
+      <div class="col-md-12 col-lg-12">
+        <form id="formulario">
+        <div class="col-md-6 col-lg-6">
+          <div class="form-group" >
+          <label>Nombre</label>
+            <input type="text" class="form-control" id="nombre" placeholder="Insertar nombre completo">
+          </div>
+          <div class="form-group" >
+          <label>Cedula</label>
+            <input type="number" class="form-control" id="cedula" placeholder="Insertar Cedula">
+          </div>
+          <div class="form-group" >
+          <span class="form-group">Correo</span>
+            <input type="email" class="form-control" id="email" placeholder="Insertar correo">
+          </div>
+          <div class="form-group" >
+          <label>Tipo de sangre</label>
+            <input type="text" class="form-control" id="tipoSangre" placeholder="Insertar tipo de sangre">
+          </div>
+        </div>
+         <div class="col-md-6 col-lg-6">
+           
+          <div class="form-group" >
+          <label>Sexo</label>
+            <input type="text" class="form-control" id="sexo" placeholder="Sexo">
+          </div>
+          <div class="form-group" >
+          <label>Fecha de nacimiento</label>
+            <input type="date" class="form-control" id="fechaNacimiento" placeholder="Insertar fecha de nacimiento">
+          </div>
+          <div class="form-group" >
+          <label>Alergias</label>
+            <input type="text" class="form-control" id="alergias" placeholder="Insertar alergias">
+          </div>
+         </div>  
+          
+          
+          <div class="col-lg-12 col-md-12">
+            <input type="button" onclick="agregarPaciente();" class="btn btn-info" value="Agregar Paciente">
+          </div>
+      </div>
+        </form>
+     
+    </div>
+
+
+    <script type="text/javascript">
+
+      function agregarPaciente(){
+     
+        
+        datos ={};
+        info = [];
+        usuario = sessionStorage.getItem('usuario');
+        correoRef = usuario.replace(".", "_", "#", "_", "$", "_", "[", "_", "]", "_");
+        datos.nombre = document.getElementById('nombre').value;
+        datos.cedula = document.getElementById('cedula').value;
+        datos.email = document.getElementById('email').value;
+        datos.tipoSangre = document.getElementById('tipoSangre').value;
+        datos.sexo = document.getElementById('sexo').value;
+        datos.fechaNacimiento = document.getElementById('fechaNacimiento').value;
+        datos.alergias = document.getElementById('alergias').value;
+        datos.visitas = 0;
+		    datos.id = document.getElementById('nombre').value;;
+        datos.doctor = correoRef;
+        determinarSignoZodiacal();
+
+        info.push(datos);
+        bd = firebase.database().ref('Hospital/' + correoRef + '/Pacientes/Datos');
+        bd.push(datos);
+        console.log(bd);
+		
+            swal(
+              'Hecho!',
+              'Paciente registrada correctamente',
+              'success'
+           )
+            document.getElementById('formulario').reset();
+
+      } 
+
+      
+
+
+    function determinarSignoZodiacal(){
+          mes = datos.fechaNacimiento.substring(5,7);
+          mes = parseFloat(mes);
+          dia = datos.fechaNacimiento.substring(8,10);
+          dia = parseFloat(dia);
+       switch (mes) {
+                case 1:
+                    if (dia > 21){
+                    
+                    
+                    datos.signoZodiacal = "Acuario";
+                                        
+                    
+                }
+                else{
+                    
+                    datos.signoZodiacal = "Capricornio";
+                    
+                    
+                }
+                   
+                break;
+
+
+              case 2:
+                  if (dia > 19){
+                      
+                    datos.signoZodiacal = "Piscis";
+                    
+                    
+                  }
+                  else{
+                      
+                    datos.signoZodiacal = "Acuario";
+                    
+                    
+                  }
+                  break;
+
+
+              case 3:
+                if (dia > 20){
+                    
+                  datos.signoZodiacal = "Aries";
+                  
+                  
+                }
+                else{
+                    
+                  datos.signoZodiacal = "Piscis";
+                  
+                  
+                }
+                break;
+
+
+            case 4:
+                if (dia > 20){
+                    
+                  datos.signoZodiacal = "Tauro";
+                    
+                  
+                }
+                else{
+                    
+                  datos.signoZodiacal = "Aries";
+                  
+                  
+                }
+                break;
+
+
+            case 5:
+                if (dia > 21){
+                    
+                  datos.signoZodiacal = "Geminis";
+                    
+                  
+                }
+                else{
+                    
+                  datos.signoZodiacal = "Tauro";
+                    
+                  
+                }
+                break;
+
+
+            case 6:
+                if (dia > 20){
+                    
+                  datos.signoZodiacal = "Cancer";
+                  
+                  
+                }
+                else{
+                    
+                  datos.signoZodiacal = "Geminis";
+                  
+                  
+                }
+                break;
+
+
+            case 7:
+              if (dia > 22){
+                  
+                  datos.signoZodiacal = "Leo";
+                  
+
+                  
+              }
+              else{
+                  
+                  datos.signoZodiacal = "Cancer";
+                    
+                  
+              }
+              break;
+
+
+          case 8:
+              if (dia > 21){
+                  
+                  datos.signoZodiacal = "Virgo";
+                    
+                  
+              }
+              else{
+                  
+                  datos.signoZodiacal = "Leo";
+                    
+                  
+              }
+              break;
+
+
+          case 9:
+                if (dia > 22){
+                    
+                    datos.signoZodiacal = "Libra";
+                    
+                  
+                }
+                else{
+                    
+                    datos.signoZodiacal = "Virgo";
+                    
+                  
+                }
+                break;
+
+
+            case 10:
+                if (dia > 22){
+                    
+                  datos.signoZodiacal = "Escorpion";
+                    
+                  
+                }
+                else{
+                    
+                  datos.signoZodiacal = "Libra";
+                    
+                  
+                }
+                break;
+
+            case 11:
+                if (dia > 21){
+                    
+                  datos.signoZodiacal = "Sagitario";
+                    
+                  
+                }
+                else{
+                    
+                  datos.signoZodiacal = "Escorpion";
+                    
+                  
+                }
+                break;
+
+            case 12:
+                if (dia > 21){
+                    
+                  datos.signoZodiacal = "Capricornio";
+                  
+                  
+                }
+                else{
+                    
+                  datos.signoZodiacal = "Sagitario";
+                  
+                  
+                }
+                break;
+        }
+
+    }
+        
+    
+    
+
+    </script>
+  </body>
+</html>

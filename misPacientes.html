@@ -1,0 +1,47 @@
+
+
+
+<div class="container">
+<h2>Pacientes</h2>
+<hr>
+	<div id="contenedor-pacientes"></div>
+<div id="segundo"></div>
+</div>
+
+
+
+<script type="text/javascript">
+
+
+        div = document.getElementById('contenedor-pacientes');
+
+        usuario = sessionStorage.getItem('usuario');
+        correoRef = usuario.replace(".", "_", "#", "_", "$", "_", "[", "_", "]", "_");
+        bd = firebase.database().ref('Hospital/' + correoRef + '/Pacientes/Datos');
+
+        bd.once('value', function(sn){
+            tmp = sn.val();
+            div.innerHTML = "";
+            for (i in tmp){
+              registro = tmp[i];
+              divtb = document.createElement('div');
+              divtb.setAttribute('class', 'thumbnail col-lg-3 col-md-3');
+              h3  = document.createElement('h3');
+              h3.innerHTML = registro.nombre;
+              divtb.appendChild(h3);
+              a = document.createElement('a');
+              a.innerHTML = "Ver más";
+              a.setAttribute('href', 'index.html?i=paciente&uid=' + i + '&id='+ registro.id);
+              a.setAttribute('class', 'btn btn-info');
+              divtb.appendChild(a);
+              console.log(i);
+         document.getElementById('segundo').appendChild(divtb);
+
+
+                }
+
+        });
+    
+
+   
+</script>

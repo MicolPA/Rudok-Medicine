@@ -1,0 +1,241 @@
+
+	<div class="container">
+		
+		<div class="row">
+		<div class="divTitulo">	
+			<h1 class="text-center text-uppercase">Realizar reportes</h1>
+		</div>
+			<div class="col-md-12  col-lg-12" style=" margin: auto;">		
+				<div class="row hide" >
+					<div class="col-md-4 col-lg-4">
+						<a href="#" data-toggle="modal" data-target="#DateModal" class="enlacesOpciones"><div class="col-md-12 col-lg-12 " id="opcionesRep">
+						<img src="img/calendariomas.png" class="img-cat" width="60%">
+						<h3>Reportes por fecha</h3>
+						</div></a>
+					</div>	
+					<div class="col-md-8 col-lg-8" id="DivReportesFecha"></div>
+					
+				</div>
+				<hr>
+				<div class="row">
+					<div class="col-md-4 col-lg-4">
+						<a data-toggle="modal" data-target="#ModalZodiaco" class="enlacesOpciones"><div class="col-md-12 col-lg-12 " id="opcionesRep">
+							<img src="img/zodiaco.jpg" class="img-cat">
+							<h3>Reporte Zodiacal</h3>
+						</div></a>	
+					</div>	
+					<div class="col-md-8 col-lg-8" id="DivReportesZodiacal">
+						<h2 id="verZodiacalTitulo"></h2>
+					</div>
+				</div>
+				<hr>
+				<div class="row">
+					<div class="col-md-4 col-lg-4">
+						<a   data-toggle="modal" data-target="#PacienteModal" class="enlacesOpciones"><div class="col-md-12 col-lg-12 " id="opcionesRep">
+							<img src="img/pacienteicon2.png" class="img-cat">
+							<h3>Ver todos los pacientes</h3>
+						</div></a>
+					</div>		
+					
+				</div>
+			</div>
+
+			
+		</div>
+
+		<div id="DateModal" class="modal fade" role="dialog">
+		  <div class="modal-dialog">
+
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal">&times;</button>
+		        <h4 class="modal-title">Elige una fecha</h4>
+		      </div>
+		      <div class="modal-body">
+		       <input type="date" name="" class="form-control" id="selectOp">
+		      </div>
+		      <div class="modal-footer">
+		      	<button type="button" class="btn btn-info" data-dismiss="modal" onclick="ReporteFecha();">Aceptar</button>
+		        <button type="button" class="btn btn-danger" data-dismiss="modal" >Cancelar</button>
+		      </div>
+		    </div>
+
+		  </div>
+		</div>
+
+		<div id="PacienteModal" class="modal fade" role="dialog">
+		  <div class="modal-dialog">
+
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal">&times;</button>
+		        <h4 class="modal-title">Listado de Pacientes</h4>
+		      </div>
+		     <div class="col-md-8 col-lg-8" id="DivReportesPacientes">
+				<h2 id="verPacientesTitulo"></h2>
+			 </div>
+		      <div class="modal-footer">
+		      			        
+		      </div>
+		    </div>
+
+		  </div>
+		</div>
+
+		<div id="ModalZodiaco" class="modal fade" role="dialog">
+		  <div class="modal-dialog">
+
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal">&times;</button>
+		        <h4 class="modal-title">Listado de Pacientes</h4>
+		      </div>
+		     <div class="col-md-8 col-lg-8" id="DivReportesPacientesZodiaco">
+				<h2 id="verPacientesTitulo"></h2>
+			 </div>
+		      <div class="modal-footer">
+		      			        
+		      </div>
+		    </div>
+
+		  </div>
+		</div>							
+	</div>
+
+<script type="text/javascript">
+
+
+
+
+		usuario = sessionStorage.getItem('usuario');
+        correoRef = usuario.replace(".", "_", "#", "_", "$", "_", "[", "_", "]", "_");
+        bd = firebase.database().ref('Hospital/' + correoRef + '/Pacientes/Datos');
+        bd.once('value', function(sn){
+          tmp = sn.val();
+          
+
+          for (i in tmp){
+            registro = tmp[i];
+            op = document.createElement('option');
+            op.innerHTML = registro.id;
+            console.log(registro.id);
+            selectOp=document.getElementById('selectOp');
+            selectOp.appendChild(op);
+            console.log("Cargados");
+          }
+        });
+
+        swal({
+		  title: '',
+		  html:
+		    '<input type="date"  class="form-control">',
+		  preConfirm: function () {
+		    return new Promise(function (resolve) {
+		      resolve([
+		        $('#swal-input1').val(),
+		        $('#swal-input2').val()
+		      ])
+		    })
+		  },
+		  onOpen: function () {
+		    $('#swal-input1').focus()
+		  }
+		}).then(function (result) {
+		  swal(JSON.stringify(result))
+		}).catch(swal.noop)
+
+
+	function ReporteFecha(){
+
+		selectOp = document.getElementById('selectOp').value;
+		usuario = sessionStorage.getItem('usuario');
+		correoRef = usuario.replace(".", "_", "#", "_", "$", "_", "[", "_", "]", "_");
+		bd = firebase.database().ref('Hospital/' + correoRef + '/Pacientes/Datos');
+		div = document.getElementById('DivReportesPacientes');
+        bd.once('value', function(sn){
+            tmp = sn.val();
+            for (i in tmp){
+              registro = tmp[i];
+              console.log(registro);
+     			
+            bd = firebase.database().ref('Hospital/' + correoRef + '/Pacientes/' + i + '/Consultas');
+		
+        	bd.once('value', function(sn){
+        		tmp = sn.val();
+        		for(p in tmp){
+        			datos = tmp[p];
+        			console.log(datos);
+        			if(selectOp == datos.fecha){
+            	
+					liNombre = document.createElement('li');
+					liNombre.innerHTML = datos.paciente;	
+					ul.appendChild(liNombre);
+					div = document.getElementById('DivReportesFecha');
+	       	 	
+          			div.appendChild(ul);
+        		}
+	       	 	
+            }
+        	});
+
+				
+
+
+                }
+
+        });
+
+		
+		
+	}
+				
+
+
+		usuario = sessionStorage.getItem('usuario');
+		correoRef = usuario.replace(".", "_", "#", "_", "$", "_", "[", "_", "]", "_");
+		bd = firebase.database().ref('Hospital/' + correoRef + '/Pacientes/Datos');
+		div = document.getElementById('DivReportesPacientes');
+        bd.once('value', function(sn){
+            tmp = sn.val();
+            for (i in tmp){
+              registro = tmp[i];
+				console.log(registro);
+				ul = document.createElement('ul');
+				liNombre = document.createElement('li');
+				liNombre.innerHTML = registro.nombre + ' <br> <b>Cantidad de visitas: </b>' + registro.visitas;
+				ul.appendChild(liNombre);
+				div = document.getElementById('DivReportesPacientes');
+			    div.appendChild(ul);
+
+
+                }
+
+        });
+
+
+							
+
+		bd = firebase.database().ref('Hospital/' + correoRef + '/Pacientes/Datos');
+		div = document.getElementById('DivReportesPacientesZodiaco');
+        bd.once('value', function(sn){
+            tmp = sn.val();
+            div.innerHTML = "";
+            for (i in tmp){
+              registro = tmp[i];
+     
+				console.log(registro);
+				ul = document.createElement('ul');
+				liNombre = document.createElement('li');
+				liNombre.innerHTML = registro.nombre + ' <br> <b>Cedula: </b>' + registro.cedula +  ' <br> <b>Signo Zodiacal: </b>' + registro.signoZodiacal;
+				ul.appendChild(liNombre);
+				div = document.getElementById('DivReportesPacientesZodiaco').appendChild(ul);;
+			    
+
+
+                }
+
+        });
+           
+	
+	
+</script>

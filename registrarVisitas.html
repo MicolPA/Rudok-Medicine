@@ -1,0 +1,157 @@
+
+    <title></title>
+ 
+
+  
+  </head>
+
+  <body>
+
+  <div class="menu"></div>
+
+    <div class="container">
+    <div class="col-md-12 col-lg-12">
+      <h1>Registrar visitas</h1>
+      <hr>
+    </div>
+      <div class="col-md-6">
+        <div class="form-group" >
+            <select class="form-control" id="selectOp">
+              <option>Seleccionar paciente</option>
+            </select>
+          </div>
+          <div class="form-group" >
+          <label>Fecha</label>
+            <input type="date" class="form-control" name = "campos" id="fecha">
+          </div>
+          <div class="form-group" >
+          <label>Motivo de consulta</label>
+            <input type="text" class="form-control" name = "campos" id="MotivoConsulta" placeholder="Motivo Consulta">
+          </div>
+          <div class="form-group" >
+          <label>No. de seguro</label>
+            <input type="number" class="form-control" name = "campos" id="NoSeguro" placeholder="No. de seguro">
+          </div>
+          
+
+          
+      </div>
+      <div class="col-md-6 col-lg-6">
+        <div class="form-group" >
+          <label>Monto pagado</label>
+            <input type="number" class="form-control" name = "campos" id="MontoConsulta" placeholder="Monto de consulta">
+          </div>
+          <div class="form-group" >
+          <label>Diagnostico</label>
+            <input type="text" class="form-control" name = "campos" id="diagnostico" placeholder="Diagnostico">
+          </div>
+          <div class="form-group" >
+          <label>Notas</label>
+            <textarea type="text" class="form-control" name = "campos" id="notas"></textarea>
+          </div>
+      </div>
+      <div class="col-lg-12 col-md-12">
+        <input type="button" onclick="registrarVisitasP()" class="btn btn-info" value="Agregar Paciente">
+      </div>
+    </div>
+
+    <script type="text/javascript">
+
+      i = getUrlParameter('i');
+      PaginaR = "registrarse.html";
+
+      if(i =='registrarse'){
+        $("#login-container").load('registrarse.html');
+      }
+        usuario = sessionStorage.getItem('usuario');
+        correoRef = usuario.replace(".", "_", "#", "_", "$", "_", "[", "_", "]", "_");
+        bd = firebase.database().ref('Hospital/' + correoRef + '/Pacientes/Datos');
+        bd.once('value', function(sn){
+          tmp = sn.val();
+          
+
+          for (i in tmp){
+            registro = tmp[i];
+            op = document.createElement('option');
+            op.innerHTML = registro.id;
+            console.log(registro.id);
+            selectOp=document.getElementById('selectOp');
+            selectOp.appendChild(op);
+            console.log("Cargados");
+          }
+        });
+      function registrarVisitasP(){
+
+        datos ={};
+        info = [];
+
+        selectOp = document.getElementById('selectOp').value;
+        if(selectOp != 'Seleccionar paciente'){
+          
+          usuario = sessionStorage.getItem('usuario');
+          correoRef = usuario.replace(".", "_", "#", "_", "$", "_", "[", "_", "]", "_");
+          
+          id = document.getElementById('selectOp').value;
+
+         
+
+          bd = firebase.database().ref('Hospital/' + correoRef + '/Pacientes/Datos');
+          bd.once('value', function(sn){
+            tmp = sn.val();
+            for(p in tmp){
+              registro = tmp[p];
+              console.log(p);
+              if(registro.nombre == selectOp ){
+
+                console.log("Encontrado");
+                registro.visitas = parseInt(registro.visitas) + 1;
+                registro.visitas = registro.visitas.toString();
+                bd = firebase.database().ref('Hospital/' + correoRef + '/Pacientes/Datos/' + p);
+                bd.set(registro);
+
+                datos.paciente = document.getElementById('selectOp').value;
+                datos.notas = document.getElementById('notas').value;
+                datos.MotivoConsulta = document.getElementById('MotivoConsulta').value;
+                datos.NoSeguro = document.getElementById('NoSeguro').value;
+                datos.fecha = document.getElementById('fecha').value;
+                datos.MontoConsulta = document.getElementById('MontoConsulta').value;
+                datos.diagnostico = document.getElementById('diagnostico').value;
+                datos.id = id;
+                info.push(datos);
+                bd = firebase.database().ref('Hospital/' + correoRef + '/Pacientes/' + p + '/Consultas');
+                bd.push(datos);
+                console.log(info);
+               
+              }
+            }
+          });
+        
+          usuario = sessionStorage.getItem('usuario');
+          correoRef = usuario.replace(".", "_", "#", "_", "$", "_", "[", "_", "]", "_");
+          bd = firebase.database().ref('Hospital/' + correoRef + '/Pacientes/Datos');
+          bd.once('value').then(function(snapshot){
+          console.log(snapshot.val());
+          informacion = (snapshot.val());
+
+          for(i in informacion){
+            registro = informacion[i];
+            }
+          });
+         
+
+            swal(
+              'Hecho!',
+              'Visita registrada correctamente',
+              'success'
+           )
+            console.log('fgf' + bd);
+          }else{
+            swal('Opss..', 'Debe seleccionar un paciente', 'error');
+          }
+        
+
+      } 
+
+    </script>
+  </body>
+</html>
